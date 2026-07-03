@@ -16,8 +16,8 @@ RUN dpkg --add-architecture i386 && \
     && rm -rf /var/lib/apt/lists/*
 
 # ── Upgrade CMake ──────────────────────────────────────────────────────────
-# Ubuntu 18.04 ships CMake 3.10.2 — mosquitto 2.1.x requires 3.18+
-# Install CMake 3.25.3 directly from Kitware
+# Ubuntu 18.04 ships CMake 3.10.2, which is too old for modern cJSON/mosquitto
+# CMake policies. Install CMake 3.25.3 directly from Kitware.
 RUN wget -q https://github.com/Kitware/CMake/releases/download/v3.25.3/cmake-3.25.3-linux-x86_64.sh \
     -O /tmp/cmake.sh && \
     chmod +x /tmp/cmake.sh && \
@@ -29,8 +29,9 @@ RUN wget -q https://github.com/Kitware/CMake/releases/download/v3.25.3/cmake-3.2
 # Install an older version of setuptools and wheel so meson can build from source
 RUN pip3 install 'setuptools<58.0.0' wheel
 
-# ── Pin exact meson/ninja versions from upstream wiki ─────────────────────
-# upstream specifies meson==0.51.1 and ninja==1.9.0 explicitly
+# ── Meson/ninja for the libfuse build ──────────────────────────────────────
+# meson >= 0.60 is the newest line that still runs on Python 3.6 (Ubuntu 18.04)
+# and is sufficient for libfuse 3.16.x. ninja is pinned to match upstream docs.
 RUN pip3 install 'meson>=0.60.0' 'ninja==1.9.0'
 
 # ── Install ninja binary (meson needs it on PATH) ─────────────────────────
@@ -64,7 +65,7 @@ RUN echo "=== Toolchain ===" && \
 WORKDIR /build
 
 COPY Makefile .
-COPY scripts/ scripts/
+COPY toolchain/ toolchain/
 COPY patches/ patches/
 
 CMD ["make", "all"]

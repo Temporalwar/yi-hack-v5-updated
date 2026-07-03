@@ -34,7 +34,7 @@ COMMON_LDFLAGS := -Wl,--gc-sections -L$(STAGING_LIB) -L$(SYSROOT)/armv5te_arm9_s
 PKG_CONFIG_PATH := $(STAGING_LIB)/pkgconfig
 
 # ââ Package versions âââââââââââââââââââââââââââââââââââââââââââââââââââââââ
-OPENSSL_VER  := 3.3.7
+OPENSSL_VER  := 3.5.7
 CURL_VER     := 8.20.0
 DROPBEAR_VER := 2025.89
 CJSON_VER    := 1.7.18
@@ -131,7 +131,7 @@ $(STAGING_LIB)/libcjson.a:
 	@mkdir -p $(CJSON_BUILD)
 	@echo " CFG cJSON-$(CJSON_VER)"
 	cd $(CJSON_BUILD) && cmake $(CJSON_SRC) \
-		-DCMAKE_TOOLCHAIN_FILE=$(CURDIR)/scripts/hisiv300.cmake \
+		-DCMAKE_TOOLCHAIN_FILE=$(CURDIR)/toolchain/hisiv300.cmake \
 		-DCMAKE_INSTALL_PREFIX=$(STAGING_DIR) \
 		-DCMAKE_BUILD_TYPE=MinSizeRel \
 		-DENABLE_CJSON_TEST=OFF \
@@ -154,13 +154,12 @@ mosquitto: $(STAGING_DIR)/usr/lib/libmosquitto.so.1
 
 $(STAGING_DIR)/usr/lib/libmosquitto.so.1:
 	@if [ ! -f $(DOWNLOAD_DIR)/v$(MOSQUITTO_VER).tar.gz ]; then echo " DL v$(MOSQUITTO_VER).tar.gz"; wget -q --show-progress -P $(DOWNLOAD_DIR) $(MOSQUITTO_URL); fi
-	@rm -rf $(BUILD_DIR)/mosquitto*
-	@tar -xzf $(DOWNLOAD_DIR)/v$(MOSQUITTO_VER).tar.gz -C $(BUILD_DIR)
+	@if [ ! -d $(MOSQUITTO_SRC) ]; then tar -xzf $(DOWNLOAD_DIR)/v$(MOSQUITTO_VER).tar.gz -C $(BUILD_DIR); fi
 	@echo "Configuring Mosquitto..."
 	rm -rf $(MOSQUITTO_BUILD_DIR)
 	mkdir -p $(MOSQUITTO_BUILD_DIR)
 	cd $(MOSQUITTO_BUILD_DIR) && cmake \
-		-DCMAKE_TOOLCHAIN_FILE=$(CURDIR)/scripts/hisiv300.cmake \
+		-DCMAKE_TOOLCHAIN_FILE=$(CURDIR)/toolchain/hisiv300.cmake \
 		-DCMAKE_BUILD_TYPE=Release \
 		-DCMAKE_INSTALL_PREFIX=$(STAGING_DIR)/usr \
 		-DCMAKE_C_FLAGS="$(COMMON_CFLAGS)" \
@@ -216,7 +215,7 @@ $(STAGING_LIB)/libfuse3.so.3:
 	@rm -rf $(LIBFUSE_BUILD)
 	@mkdir -p $(LIBFUSE_BUILD)
 	@echo " CFG libfuse-$(LIBFUSE_VER)"
-	cd $(LIBFUSE_BUILD) && PKG_CONFIG_PATH="$(PKG_CONFIG_PATH)" meson setup $(LIBFUSE_SRC) --cross-file $(CURDIR)/scripts/hisiv300-meson.txt --prefix=$(STAGING_DIR) --buildtype=minsize -Ddefault_library=shared -Dexamples=false -Dtests=false -Duseroot=false -Dutils=false
+	cd $(LIBFUSE_BUILD) && PKG_CONFIG_PATH="$(PKG_CONFIG_PATH)" meson setup $(LIBFUSE_SRC) --cross-file $(CURDIR)/toolchain/hisiv300-meson.txt --prefix=$(STAGING_DIR) --buildtype=minsize -Ddefault_library=shared -Dexamples=false -Dtests=false -Duseroot=false -Dutils=false
 	@echo " BUILD libfuse-$(LIBFUSE_VER)"
 	ninja -C $(LIBFUSE_BUILD)
 	@echo " INSTALL libfuse-$(LIBFUSE_VER)"
