@@ -44,7 +44,7 @@ All bundled binaries are cross-compiled for `arm-hisiv300-linux` (ARMv5te, uClib
 ---
 ## What's Fixed
 
-Shell and CGI bug fixes carried in this fork (see the [v1.1.0 release notes](https://github.com/Temporalwar/yi-hack-v5-updated/releases/tag/v1.1.0) for the full changelog):
+Shell and CGI bug fixes carried in this fork (see the [v1.2.0 release notes](https://github.com/Temporalwar/yi-hack-v5-updated/releases/tag/v1.2.0) for the full changelog):
 
 * **Cron overwrite bugs** — several scripts used `>` (overwrite) instead of `>>` when writing crontab entries, so only the last entry survived. Fixed in `system.sh` and `mqtt_advertise/startup.sh`.
 * **RTSP watchdog** — `wd_rtsp.sh` used the wrong port variable, so locked-stream recovery never triggered. Fixed.
