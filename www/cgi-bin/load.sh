@@ -52,7 +52,7 @@ if [ "$REQUEST_METHOD" = "POST" ]; then
             ROW=`cat $TMPOUT | awk "FNR == $l {print}"`
             ROWLEN=${#ROW}
             LENSKIPSTART=$((LENSKIPSTART+ROWLEN+1))
-        elif [ \( $l -gt 4 \) -a \( $l -lt $LINES \) ]; then
+        elif [ "$l" -gt 4 ] && [ "$l" -lt "$LINES" ]; then
             ROW=`cat $TMPOUT | awk "FNR == $l {print}"`
         else
             break
@@ -64,14 +64,14 @@ fi
 # Extract tar.bz2 file
 LEN=$((CONTENT_LENGTH-LENSKIPSTART-LENSKIPEND+2))
 dd if=$TMPOUT of=$TMPOUTbz2 bs=1 skip=$LENSKIPSTART count=$LEN >/dev/null 2>&1
-cd $TMPDIR
+cd $TMPDIR || exit 1
 bzip2 -d $TMPOUTbz2
 tar xvf $TMPOUTtar >/dev/null 2>&1
 RES=$?
 
 # Verify result of tar.bz2 command and copy files to destination
 if [ $RES -eq 0 ]; then
-    if [ \( -f "system.conf" \) -a \( -f "camera.conf" \) ]; then
+    if [ -f "system.conf" ] && [ -f "camera.conf" ]; then
         mv -f *.conf /tmp/sd/yi-hack-v5/etc/
         chmod 0644 /tmp/sd/yi-hack-v5/etc/*.conf
         if [ -f hostname ]; then
@@ -115,7 +115,7 @@ else
     ipc_cmd -v detect
 fi
 
-ipc_cmd -s $(get_config SENSITIVITY)
+ipc_cmd -s "$(get_config SENSITIVITY)"
 
 if [[ $(get_config LED) == "no" ]] ; then
     ipc_cmd -l off

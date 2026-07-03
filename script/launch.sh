@@ -44,7 +44,7 @@ launch_apps() {
   if [ "$settings" = "high" ]; then
     debug_flag=""
     if [ "$debug_mode" = true ]; then
-      debug_flag="-d "$debug_level""
+      debug_flag="-d $debug_level"
     fi
     echo Launching - h264grabber -r high -m "$model" -f &
     h264grabber -r high -m "$model" -f &
@@ -56,7 +56,7 @@ launch_apps() {
   if [ "$settings" = "low" ]; then
     debug_flag=""
     if [ "$debug_mode" = true ]; then
-      debug_flag="-d "$debug_level""
+      debug_flag="-d $debug_level"
     fi
     echo Launching - h264grabber -r low -m "$model" -f &
     h264grabber -r low -m "$model" -f &
@@ -68,7 +68,7 @@ launch_apps() {
   if [ "$settings" = "both" ]; then
     debug_flag=""
     if [ "$debug_mode" = true ]; then
-      debug_flag="-d "$debug_level""
+      debug_flag="-d $debug_level"
     fi
     echo Launching - h264grabber -r low -m "$model" -f &
     h264grabber -r low -m "$model" -f &
@@ -112,7 +112,7 @@ elif [ "$operation" = "l" ] || [ "$operation" = "L" ]; then
   if [ "$debug_choice" = "y" ] || [ "$debug_choice" = "Y" ]; then
     debug_mode=true
     read -p "Provide debug level (0-15): " debug_level
-    while ! [ "$debug_level" -ge 0 -a "$debug_level" -le 15 ] 2>/dev/null; do
+    while ! { [ "$debug_level" -ge 0 ] && [ "$debug_level" -le 15 ]; } 2>/dev/null; do
       echo "Invalid input. Please enter a debug level between 0 and 15."
       read -p "Provide debug level (0-15): " debug_level
     done

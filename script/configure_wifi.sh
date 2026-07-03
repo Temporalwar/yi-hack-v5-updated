@@ -2,7 +2,7 @@
 
 # 0.4.1
 
-function print_help {
+print_help() {
     echo "configure_wifi.sh"
     echo "will be used on next boot"
 }

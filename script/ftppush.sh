@@ -237,7 +237,7 @@ serviceMain ()
 			chmod -R 0755 "${FOLDER_TO_WATCH}"
 		fi
 		#
-		if [[ $(get_config FTP_UPLOAD) == "yes" ]] ; then
+		if [ "$(get_config FTP_UPLOAD)" = "yes" ] ; then
 			checkFiles
 		fi
 		#
@@ -254,7 +254,7 @@ serviceMain ()
 # ---------------------------------------------------
 #
 # set +m
-trap "" SIGHUP
+trap "" HUP
 #
 if [ "${1}" = "cron" ]; then
 	serviceMain --one-shot

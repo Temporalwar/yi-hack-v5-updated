@@ -34,7 +34,8 @@ get_file_from_post()
 {
     local FILE=$1
 
-    local CR=`printf '\r'`
+    local CR
+    CR=$(printf '\r')
 
     IFS="$CR"
     read -r delim_line

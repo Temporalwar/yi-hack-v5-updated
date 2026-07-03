@@ -1,6 +1,6 @@
 #!/bin/sh
 
-# 0.4.1
+# 1.1.0
 
 CONF_FILE="etc/system.conf"
 
@@ -50,8 +50,8 @@ if [ -L "/var/run/utmp" ]; then
   reboot
 fi
 
-if [ ! -L "~/.ash_history" ]; then
-  ln -sf /dev/null ~/.ash_history
+if [ ! -L "$HOME/.ash_history" ]; then
+  ln -sf /dev/null "$HOME/.ash_history"
 fi
 
 if [ ! -L "/home/yi-hack-v5/.ash_history" ]; then
@@ -111,7 +111,8 @@ fi
 
 hostname -F $YI_HACK_PREFIX/etc/hostname
 
-export TZ=$(get_config TIMEZONE)
+TZ=$(get_config TIMEZONE)
+export TZ
 
 if [[ $(get_config SWAP_FILE) == "yes" ]] || [[ $MODEL_SUFFIX == "yi_dome" ]] || [[ $MODEL_SUFFIX == "yi_home" ]] ; then
     SD_PRESENT=$(mount | grep mmc | grep -c ^)
@@ -183,12 +184,12 @@ else
 fi
 
 if [[ $(get_config NTPD) == "yes" ]] ; then
-    sleep 5 && ntpd -p $(get_config NTP_SERVER) &
+    sleep 5 && ntpd -p "$(get_config NTP_SERVER)" &
 fi
 
 if [[ $(get_config DISABLE_CLOUD) == "no" ]] ; then
     (
-        cd /home/app
+        cd /home/app || exit 1
         killall dispatch
         LD_PRELOAD=/home/yi-hack-v5/lib/ipc_multiplex.so ./dispatch &
         sleep 3
@@ -208,7 +209,7 @@ if [[ $(get_config DISABLE_CLOUD) == "no" ]] ; then
 fi
 if [[ $(get_config DISABLE_CLOUD) == "yes" ]] ; then
     (
-        cd /home/app
+        cd /home/app || exit 1
         killall dispatch
         LD_PRELOAD=/home/yi-hack-v5/lib/ipc_multiplex.so ./dispatch &
         sleep 3
@@ -218,7 +219,7 @@ if [[ $(get_config DISABLE_CLOUD) == "yes" ]] ; then
         LD_LIBRARY_PATH="/home/yi-hack-v5/lib:/lib:/home/lib:/home/app/locallib:/home/hisiko/hisilib" ./rmm &
         sleep 8
         if [[ $(get_config REC_WITHOUT_CLOUD) == "yes" ]] ; then
-            cd /home/app
+            cd /home/app || exit 1
             ./mp4record &
         fi
         sleep 4

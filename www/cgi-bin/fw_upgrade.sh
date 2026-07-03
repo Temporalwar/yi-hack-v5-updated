@@ -1,6 +1,6 @@
 #!/bin/sh
 
-# 0.4.1
+# 1.1.0
 
 YI_HACK_PREFIX="/tmp/sd/yi-hack-v5"
 MODEL_SUFFIX=`cat /home/app/.camver`
@@ -56,7 +56,7 @@ elif [ "$VAL" == "upgrade" ] ; then
     mkdir -p /tmp/sd/${MODEL_SUFFIX}
     mkdir -p /tmp/sd/${MODEL_SUFFIX}.conf
  #   cd /tmp/sd/${MODEL_SUFFIX}
-    cd /tmp/sd
+    cd /tmp/sd || exit 1
     
     if [ -f /tmp/sd/${MODEL_SUFFIX}_x.x.x.tgz ]; then
 #        mv /tmp/sd/${MODEL_SUFFIX}_x.x.x.tgz /tmp/sd/${MODEL_SUFFIX}/${MODEL_SUFFIX}_x.x.x.tgz
@@ -128,7 +128,7 @@ elif [ "$VAL" == "preupgrade" ] ; then
     mkdir -p /tmp/sd/${MODEL_SUFFIX}
     mkdir -p /tmp/sd/${MODEL_SUFFIX}.conf
  #   cd /tmp/sd/${MODEL_SUFFIX}
-    cd /tmp/sd
+    cd /tmp/sd || exit 1
     
     if [ -f /tmp/sd/${MODEL_SUFFIX}_x.x.x.tgz ]; then
 #        mv /tmp/sd/${MODEL_SUFFIX}_x.x.x.tgz /tmp/sd/${MODEL_SUFFIX}/${MODEL_SUFFIX}_x.x.x.tgz

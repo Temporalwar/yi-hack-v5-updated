@@ -1,6 +1,6 @@
 #!/bin/sh
 
-# 0.4.1
+# 1.1.0
 
 script_name=$(basename -- "$0")
 
@@ -73,7 +73,7 @@ restart_cloud()
 {
     if [[ $(get_config DISABLE_CLOUD) == "yes" ]] ; then
     (
-        cd /home/app
+        cd /home/app || exit 1
         ./cloud &
     )
     fi

@@ -1,8 +1,8 @@
 #!/bin/sh
 
-# 0.4.1
+# 1.1.0
 
-cd /tmp/sd/yi-hack-v5/etc
+cd /tmp/sd/yi-hack-v5/etc || exit 1
 
 rm hostname
 

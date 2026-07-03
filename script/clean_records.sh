@@ -1,6 +1,6 @@
 #!/bin/sh
 
-# 0.4.1
+# 1.1.0
 
 if [ $# -ne 1 ]; then
     exit
@@ -21,7 +21,7 @@ fi
 USED_SPACE_LIMIT=$((100-$1))
 echo "$USED_SPACE_LIMIT"
 
-cd /tmp/sd/record
+cd /tmp/sd/record || exit 1
 USED_SPACE=`df /tmp/sd/ | grep mmc | awk '{print $5}' | tr -d '%'`
 
 if [ -z "$USED_SPACE" ]; then

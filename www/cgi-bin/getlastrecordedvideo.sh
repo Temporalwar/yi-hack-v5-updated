@@ -59,11 +59,11 @@ if [ "$OLDNESS" -lt "0" ]; then
         FILECOUNT=`ls -At /tmp/sd/record/$DIRNAME | grep .mp4 -c`
         DIRCOUNT=`ls -At /tmp/sd/record/ | grep H -c`
         SLEEPCOUNT=0
-        while [ "$FILECOUNT" -eq `ls -At /tmp/sd/record/$DIRNAME | grep .mp4 -c` ]; do
+        while [ "$FILECOUNT" -eq "$(ls -At /tmp/sd/record/$DIRNAME | grep -c .mp4)" ]; do
             if [ "$SLEEPCOUNT" -gt 800 ]; then
                 # After 80 seconds, we break the wait.
                 break;
-            elif [ "$DIRCOUNT" -lt `ls -At /tmp/sd/record/ | grep H -c` ]; then
+            elif [ "$DIRCOUNT" -lt "$(ls -At /tmp/sd/record/ | grep -c H)" ]; then
                 # If a new dir comes, we break the wait.
                 break;
             fi
@@ -98,7 +98,7 @@ done
 
 if [ "$TYPE" == "2" ]; then
     LOCAL_IP=$(ifconfig wlan0 | awk '/inet addr/{print substr($2,6)}')
-    source /tmp/sd/yi-hack-v5/etc/system.conf
+    . /tmp/sd/yi-hack-v5/etc/system.conf
 
     printf "Content-type: text/plain\r\n\r\n"
     echo "http://$LOCAL_IP:$HTTPD_PORT/record/$DIRNAME/$VIDNAME"
