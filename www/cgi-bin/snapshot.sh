@@ -1,6 +1,6 @@
 #!/bin/sh
 
-# 0.4.1
+# 1.1.0
 
 validateFile()
 {
@@ -48,9 +48,8 @@ done
 
 REDIRECT=""
 if [ "$OUTPUT_FILE" != "none" ] ; then
-    OUTPUT_FILE=$(validateFile "$OUTPUT_FILE")
-    if [ "$OUTPUT_FILE" != "invalid" ]; then
-        OUTPUT_DIR=$(cd "$(dirname "/tmp/sd/record/$OUTPUT_FILE")"; pwd)
+    if validateFile "$OUTPUT_FILE"; then
+        OUTPUT_DIR=$(cd "$(dirname "/tmp/sd/record/$OUTPUT_FILE")" 2>/dev/null && pwd)
         OUTPUT_DIR=$(echo "$OUTPUT_DIR" | cut -c1-14)
         if [ "$OUTPUT_DIR" == "/tmp/sd/record" ]; then
             REDIRECT="yes"

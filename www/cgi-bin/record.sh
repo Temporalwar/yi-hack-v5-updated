@@ -1,6 +1,6 @@
 #!/bin/sh
 
-# 0.4.1
+# 1.1.0
 
 validateNumber()
 {
@@ -14,19 +14,14 @@ validateNumber()
 
 TIME=60
 
-for I in 1
-do
-    CONF="$(echo $QUERY_STRING | cut -d'&' -f$I | cut -d'=' -f1)"
-    VAL="$(echo $QUERY_STRING | cut -d'&' -f$I | cut -d'=' -f2)"
+CONF="$(echo $QUERY_STRING | cut -d'&' -f1 | cut -d'=' -f1)"
+VAL="$(echo $QUERY_STRING | cut -d'&' -f1 | cut -d'=' -f2)"
 
-    if [ "$CONF" == "time" ] ; then
-        TIME="$VAL"
-    fi
-done
+if [ "$CONF" == "time" ] ; then
+    TIME="$VAL"
+fi
 
-validateNumber $TIME
-
-if [ "$TIME" == "invalid" ] ; then
+if ! validateNumber "$TIME" ; then
     printf "Content-type: application/json\r\n\r\n"
     printf "{\n"
     printf "\"error\":\"Invalid time\"\n"

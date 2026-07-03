@@ -1,6 +1,6 @@
 #!/bin/sh
 
-# 0.4.1
+# 1.1.0
 
 CONF_FILE="etc/system.conf"
 
@@ -93,7 +93,7 @@ start_onvif()
         HIGHWIDTH="1920"
         HIGHHEIGHT="1080"
     fi
-    if [[ $2 == "yes" ]; then
+    if [[ $2 == "yes" ]]; then
         WATERMARK="&watermark=yes"
     fi
     if [[ $1 == "high" ]]; then
@@ -259,7 +259,7 @@ ps_program()
 
 . $YI_HACK_PREFIX/www/cgi-bin/validate.sh
 
-if ! $(validateQueryString $QUERY_STRING); then
+if ! validateQueryString "$QUERY_STRING"; then
     printf "Content-type: application/json\r\n\r\n"
     printf "{\n"
     printf "\"%s\":\"%s\"\\n" "error" "true"
@@ -304,7 +304,7 @@ if [ "$ACTION" == "start" ] ; then
         mqttv4 > /dev/null &
         mqtt-config > /dev/null &
     elif [ "$NAME" == "mp4record" ]; then
-        cd /home/app
+        cd /home/app || exit 1
         ./mp4record > /dev/null &
     elif [ "$NAME" == "all" ]; then
         start_rtsp
@@ -313,7 +313,7 @@ if [ "$ACTION" == "start" ] ; then
         start_ftpd
         mqttv4 > /dev/null &
         mqtt-config > /dev/null &
-        cd /home/app
+        cd /home/app || exit 1
         ./mp4record > /dev/null &
     fi
 elif [ "$ACTION" == "stop" ] ; then

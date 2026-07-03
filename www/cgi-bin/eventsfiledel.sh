@@ -1,6 +1,6 @@
 #!/bin/sh
 
-# 0.4.1
+# 1.1.0
 
 validateFile()
 {
@@ -26,7 +26,7 @@ validateFile()
 }
 
 case $QUERY_STRING in
-    *[\'!\"@\#\$%^*\(\)_+,:\;]* ) exit;;
+    *[\`\|\<\>\/\'!\"@\#\$%\&^*\(\)_+,:\;]* ) exit;;
 esac
 
 FILE="none"

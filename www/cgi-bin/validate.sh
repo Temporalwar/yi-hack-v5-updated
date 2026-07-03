@@ -1,11 +1,11 @@
 #!/bin/sh
 
-# 0.4.1
+# 1.1.0
 
 validateFile()
 {
     case $1 in
-        *[\'!\"@\#\$%\&^*\(\),:\;]* )
+        *[\`\|\<\>\'!\"@\#\$%\&^*\(\),:\;]* )
             return 1;;
         *)
             return 0;;
@@ -18,17 +18,19 @@ validateBaseName()
         return 1
     fi
     case $1 in
-        *[\/\'!\"@\#\$%\&^*\(\),:\;]* )
+        *[\`\|\<\>\/\'!\"@\#\$%\&^*\(\),:\;]* )
             return 1;;
         *)
             return 0;;
     esac
 }
 
+# Record directories are machine-generated names like 2026Y07M03D14H.
+# Allowlist: letters and digits only, non-empty.
 validateDir()
 {
     case $1 in
-        *[\'!\"@\#\$%^*\(\)_+.,:\;]* )
+        ''|*[!0-9A-Za-z]* )
             return 1;;
         *)
             return 0;;
@@ -59,11 +61,22 @@ validateNumber(){
     esac
 }
 
-# Only chars, ditigs and some special chars: '_' '-' ' '
+# Date/time interval values: digits with optional . , : separators
+validateDT()
+{
+    case $1 in
+        ''|*[!0-9.,:]* )
+            return 1;;
+        * )
+            return 0;;
+    esac
+}
+
+# Only chars, digits and some special chars: '_' '-' ' '
 validateString()
 {
     case $1 in
-        *[\'!\"@\#\$%\&^*\(\).,:\;]* )
+        *[\`\|\<\>\'!\"@\#\$%\&^*\(\).,:\;]* )
             return 1;;
         *)
             return 0;;
@@ -73,7 +86,7 @@ validateString()
 validateQueryString()
 {
     case $1 in
-        *[\'!\"@\#\$%^*\(\),:\;]* )
+        *[\`\|\<\>\'!\"@\#\$%^*\(\),:\;]* )
             return 1;;
         *)
             return 0;;

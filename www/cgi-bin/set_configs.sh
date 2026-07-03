@@ -1,6 +1,6 @@
 #!/bin/sh
 
-# 0.4.1
+# 1.1.0
 
 YI_HACK_PREFIX="/tmp/sd/yi-hack-v5"
 
@@ -48,7 +48,7 @@ get_conf_type()
 
 . $YI_HACK_PREFIX/www/cgi-bin/validate.sh
 
-if ! $(validateQueryString $QUERY_STRING); then
+if ! validateQueryString "$QUERY_STRING"; then
     printf "Content-type: application/json\r\n\r\n"
     printf "{\n"
     printf "\"%s\":\"%s\"\\n" "error" "true"
@@ -99,7 +99,7 @@ for ROW in $ROWS; do
             echo "$VALUE" > $YI_HACK_PREFIX/etc/hostname
         fi
     elif [ "$KEY" == "MOTION_IMAGE_DELAY" ] ; then
-        if $(validateNumber $VALUE); then
+        if validateNumber "$VALUE"; then
             VALUE=$(echo $VALUE | sed 's/,/./g')
             VAR=$(awk 'BEGIN{ print "'$VALUE'"<="'5.0'" }')
             if [ "$VAR" == "1" ]; then
@@ -113,7 +113,7 @@ for ROW in $ROWS; do
         cat $CONF_FILE.template > $CONF_FILE
         echo -e $VALUE >> $CONF_FILE
     elif [ "$KEY" == "TIMELAPSE_DT" ] ; then
-        if $(validateDT $VALUE); then
+        if validateDT "$VALUE"; then
             sed -i "s/^\(${KEY}\s*=\s*\).*$/\1${VALUE}/" $CONF_FILE
         fi
 	else

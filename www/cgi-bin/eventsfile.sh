@@ -1,15 +1,17 @@
 #!/bin/sh
 
-# 0.4.1
+# 1.1.0
 
 printf "Content-type: application/json\r\n\r\n"
 
-case $QUERY_STRING in
-    *[\'!\"@\#\$%^*\(\)_+.,:\;]* ) exit;;
-esac
-
 CONF="$(echo $QUERY_STRING | cut -d'=' -f1)"
 VAL="$(echo $QUERY_STRING | cut -d'=' -f2)"
+
+# Record directories are machine-generated alphanumeric names (e.g. 2026Y07M03D14H).
+# Allowlist instead of blocklist: reject anything else.
+case $VAL in
+    ''|*[!0-9A-Za-z]* ) exit;;
+esac
 
 if [ "$CONF" == "dirname" ]; then
      DIR=$VAL

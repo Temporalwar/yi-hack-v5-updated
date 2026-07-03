@@ -1,12 +1,12 @@
 #!/bin/sh
 
-# 0.4.1
+# 1.1.0
 
 YI_HACK_PREFIX="/tmp/sd/yi-hack-v5"
 
 . $YI_HACK_PREFIX/www/cgi-bin/validate.sh
 
-if ! $(validateQueryString $QUERY_STRING); then
+if ! validateQueryString "$QUERY_STRING"; then
     printf "Content-type: application/json\r\n\r\n"
     printf "{\n"
     printf "\"%s\":\"%s\"\\n" "error" "true"
@@ -39,5 +39,5 @@ fi
 printf "Content-type: application/json\r\n\r\n"
 printf "{\n"
 printf "\"%s\":\"%s\",\\n" "error" "false"
-printf "\"%s\":%s\\n" "result" "$RES"
+printf "\"%s\":%s\\n" "result" "${RES:-null}"
 printf "}"
