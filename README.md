@@ -32,7 +32,7 @@ All bundled binaries are cross-compiled for `arm-hisiv300-linux` (ARMv5te, uClib
 | Package | Updated to | Why this version |
 | :--- | :--- | :--- |
 | **OpenSSL** | **3.5.7 (LTS)** | Replaces EOL 1.1.x. Moved from the 3.3.x branch (upstream support ended April 2026) to the 3.5 LTS branch, supported until April 2030. Includes all fixes from 3.3.7 (CVE-2026-28387/28388/28389/28390, CVE-2026-31790) plus the 3.5.7 fixes: CVE-2026-45447, CVE-2026-34182, CVE-2026-34183, CVE-2026-42764, and others. |
-| **curl** | **8.20.0** | Replaces an old development snapshot; current stable with years of upstream security fixes. |
+| **curl** | **8.21.0** | Replaces an old development snapshot. 8.21.0 fixed 18 CVEs in a single release (curl's largest security release to date), including CVE-2026-8932, a 25-year-old mTLS connection-reuse flaw. |
 | **dropbear** | **2025.89** | Replaces the 2018-era build. Patches CVE-2025-14282 — in multi-user mode the SSH server performed socket forwardings as root before dropping to the logged-in user (fixed in 2025.88). |
 | **cJSON** | **1.7.18** | Lightweight JSON library used by the firmware tooling. |
 | **mosquitto** | **1.6.15** | Pinned to the **pure-C 1.6.x line**. Mosquitto 2.x failed to link against uClibc and has a heavier footprint; 1.6.15 links cleanly with `WITH_MEMORY_TRACKING=no` and keeps memory use low on the camera. |
